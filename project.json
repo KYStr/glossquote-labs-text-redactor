@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "24-text-redactor",
+  "slug": "text-redactor",
+  "title": "自訂文字遮蔽",
+  "version": "0.1.0",
+  "sourceRepository": "https://github.com/KYStr/glossquote-labs-text-redactor",
+  "productionOrigin": "https://redact.glossquote.com",
+  "M1": "primary-accepted-with-explicit-not-run",
+  "M2": "source-release-candidate",
+  "hosting": "not-deployed-by-this-source-task",
+  "externalReview": "not-run",
+  "runtimeDependencies": 0
+}

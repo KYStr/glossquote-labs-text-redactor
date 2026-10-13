@@ -1,0 +1,19 @@
+{
+  "name": "glossquote-text-redactor",
+  "compatibility_date": "2026-10-13",
+  "workers_dev": false,
+  "preview_urls": false,
+  "send_metrics": false,
+  "logpush": false,
+  "assets": {
+    "directory": "./dist-production",
+    "html_handling": "none",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "redact.glossquote.com", "custom_domain": true }],
+  "observability": {
+    "enabled": false,
+    "logs": { "enabled": false, "invocation_logs": false, "head_sampling_rate": 0 },
+    "traces": { "enabled": false, "head_sampling_rate": 0 }
+  }
+}

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="貼上文字並指定要遮蔽的字串，在瀏覽器本機逐字替換。工具不會自動偵測其他個資，分享前請自行檢查結果。">
+  <title>自訂文字遮蔽工具｜GlossQuote Tools</title>
+  <link rel="stylesheet" href="/styles/app.css">
+  <script type="module" src="/js/app.mjs"></script>
+</head>
+<body>
+  <header class="topbar">
+    <nav aria-label="網站導覽">
+      <a class="brand" href="https://glossquote.com/index.html">Gloss Tools <span>by GlossQuote</span></a>
+      <div class="navlinks"><a href="https://glossquote.com/index.html">工具首頁</a><a href="/en/index.html" lang="en" aria-label="切換到英文">English</a></div>
+    </nav>
+  </header>
+  <main id="main">
+    <header class="page-heading"><h1>自訂文字遮蔽</h1><p>只替換你列出的確切文字，固定以 [REDACTED] 取代。它不是自動個資偵測器。</p></header>
+    <aside class="warning" aria-label="遮蔽限制"><span aria-hidden="true">⚠</span><p>只替換你列出的字串。工具不會自動找出其他個資；分享前請逐段檢查輸出。</p></aside>
+    <noscript><p class="error">請啟用 JavaScript 才能在瀏覽器本機處理文字。</p></noscript>
+    <form id="redactor-form" autocomplete="off" novalidate>
+      <section class="source-section" aria-labelledby="source-label">
+        <label id="source-label" class="section-label" for="source">來源文字</label>
+        <p class="help" id="source-help">貼入要分享的文字。最多 100,000 UTF-16 單位；部分 emoji 佔兩個單位。</p>
+        <textarea id="source" rows="7" placeholder="貼入你要檢查的文字" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="source-help source-length source-error"></textarea>
+        <p id="source-length" class="length">0 / 100,000 單位</p>
+        <p id="source-error" class="error" hidden></p>
+      </section>
+      <section class="targets-section" aria-labelledby="targets-heading">
+        <div class="section-heading"><h2 id="targets-heading">要遮蔽的字串</h2><span id="rule-count" class="length">1 / 50 條目標</span></div>
+        <p class="help" id="rule-help">大小寫與空白都精確匹配。目標只能是一行；換行與控制字元會被拒絕，前後空白不會被刪除。</p>
+        <p class="help">每次符合都會替換為 [REDACTED]。最多 50 條目標，每條最多 200 UTF-16 單位。</p>
+        <div id="rules"></div>
+        <p id="rules-error" class="error" hidden></p>
+        <button type="button" id="add-rule" class="secondary">+ 新增遮蔽目標</button>
+      </section>
+      <div class="actionbar"><button type="submit" id="process" class="primary">遮蔽指定字串</button><button type="button" id="clear" class="quiet">清除目前文字</button></div>
+    </form>
+    <section class="result-section" aria-labelledby="result-heading">
+      <h2 id="result-heading">處理後副本</h2>
+      <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">貼入來源，列出要遮蔽的字串，再執行處理。</p>
+      <ul id="match-counts" class="match-counts" hidden></ul>
+      <div id="result-content" hidden>
+        <label class="help" id="result-label" for="output">可捲動、選取並檢查完整輸出。分享前請逐段核對。</label>
+        <textarea id="output" rows="8" readonly spellcheck="false" autocomplete="off" aria-describedby="result-warning" aria-labelledby="result-heading result-label"></textarea>
+      </div>
+      <div class="result-actions"><button type="button" id="copy" class="secondary" disabled>複製遮蔽結果</button><button type="button" id="download" class="secondary" disabled>下載遮蔽結果</button></div>
+      <p id="copy-status" class="help" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p class="result-warning" id="result-warning"><span aria-hidden="true">⚠ </span>只替換你列出的字串。工具不會自動找出其他個資；分享前請逐段檢查輸出。</p>
+    </section>
+    <aside class="lifecycle"><p>文字在目前瀏覽器分頁處理，不提交給工具服務；不需要帳號。</p><p>文字與規則只保留在此分頁。重新載入會清除目前文字和規則。下載結果前請先自行確認。</p></aside>
+    <section class="faq" aria-labelledby="faq-heading"><h2 id="faq-heading">使用說明</h2>
+      <details><summary>會自動找出姓名或 email 嗎？</summary><p>不會，只會替換你列出的字串。未列出的內容會保留，請檢查全文。</p></details>
+      <details><summary>大小寫或空白一樣嗎？</summary><p>大小寫和空白精確比對；目標限單行，拒絕換行和控制字元，也不刪除前後空白或做 Unicode 正規化。同一起點會優先匹配最長目標。</p></details>
+      <details><summary>原文會上傳嗎？</summary><p>文字依設計在目前瀏覽器分頁處理，不提交給工具服務。沒有雲端儲存或自動復原；重新載入會清除文字。</p></details>
+    </section>
+  </main>
+  <footer>Gloss Tools by GlossQuote</footer>
+  <dialog id="clear-dialog" aria-labelledby="clear-title" aria-describedby="clear-help">
+    <h2 id="clear-title">清除目前文字？</h2><p id="clear-help">這會清除來源、所有遮蔽目標與處理結果。取消會保留目前所有資料。</p>
+    <div class="dialog-actions"><button type="button" id="cancel-clear" class="secondary" autofocus>保留文字</button><button type="button" id="confirm-clear" class="danger">清除來源、規則與結果</button></div>
+  </dialog>
+</body>
+</html>

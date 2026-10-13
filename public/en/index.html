@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Replace exact strings you specify in text, locally in your browser. The tool does not detect other personal data; review the result before sharing.">
+  <title>Custom Text Redactor | GlossQuote Tools</title>
+  <link rel="stylesheet" href="/styles/app.css">
+  <script type="module" src="/js/app.mjs"></script>
+</head>
+<body>
+  <header class="topbar">
+    <nav aria-label="Site navigation">
+      <a class="brand" href="https://glossquote.com/en/index.html">Gloss Tools <span>by GlossQuote</span></a>
+      <div class="navlinks"><a href="https://glossquote.com/en/index.html">All tools</a><a href="/index.html" lang="zh-Hant" aria-label="Switch to Traditional Chinese">繁體中文</a></div>
+    </nav>
+  </header>
+  <main id="main">
+    <header class="page-heading"><h1>Redact strings you specify</h1><p>Replace the exact text you list with [REDACTED]. This is not an automatic personal data detector.</p></header>
+    <aside class="warning" aria-label="Redaction limits"><span aria-hidden="true">⚠</span><p>Only the exact strings you list are replaced. This tool does not detect other personal data. Review the full output before sharing.</p></aside>
+    <noscript><p class="error">Enable JavaScript to process text locally in your browser.</p></noscript>
+    <form id="redactor-form" autocomplete="off" novalidate>
+      <section class="source-section" aria-labelledby="source-label">
+        <label id="source-label" class="section-label" for="source">Source text</label>
+        <p class="help" id="source-help">Paste the text you plan to share. Maximum 100,000 UTF-16 units; some emoji use two units.</p>
+        <textarea id="source" rows="7" placeholder="Paste the text you want to review" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="source-help source-length source-error"></textarea>
+        <p id="source-length" class="length">0 / 100,000 units</p>
+        <p id="source-error" class="error" hidden></p>
+      </section>
+      <section class="targets-section" aria-labelledby="targets-heading">
+        <div class="section-heading"><h2 id="targets-heading">Strings to redact</h2><span id="rule-count" class="length">1 / 50 target</span></div>
+        <p class="help" id="rule-help">Match is case- and space-sensitive. Enter one line; line breaks and control characters are rejected. Leading and trailing spaces are kept.</p>
+        <p class="help">Each match is replaced with [REDACTED]. Add up to 50 targets, each at most 200 UTF-16 units.</p>
+        <div id="rules"></div>
+        <p id="rules-error" class="error" hidden></p>
+        <button type="button" id="add-rule" class="secondary">+ Add a redaction target</button>
+      </section>
+      <div class="actionbar"><button type="submit" id="process" class="primary">Redact listed strings</button><button type="button" id="clear" class="quiet">Clear current text</button></div>
+    </form>
+    <section class="result-section" aria-labelledby="result-heading">
+      <h2 id="result-heading">Processed copy</h2>
+      <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Paste your source, list the strings to redact, then process the text.</p>
+      <ul id="match-counts" class="match-counts" hidden></ul>
+      <div id="result-content" hidden>
+        <label class="help" id="result-label" for="output">Scroll, select, and review the full output before sharing.</label>
+        <textarea id="output" rows="8" readonly spellcheck="false" autocomplete="off" aria-describedby="result-warning" aria-labelledby="result-heading result-label"></textarea>
+      </div>
+      <div class="result-actions"><button type="button" id="copy" class="secondary" disabled>Copy redacted result</button><button type="button" id="download" class="secondary" disabled>Download redacted result</button></div>
+      <p id="copy-status" class="help" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p class="result-warning" id="result-warning"><span aria-hidden="true">⚠ </span>Only the exact strings you list are replaced. This tool does not detect other personal data. Review the full output before sharing.</p>
+    </section>
+    <aside class="lifecycle"><p>Text is processed in this browser tab and is not submitted to the tool service. No account is needed.</p><p>Text and targets stay only in this tab. Reloading clears the current text and targets. Review the result before downloading.</p></aside>
+    <section class="faq" aria-labelledby="faq-heading"><h2 id="faq-heading">How it works</h2>
+      <details><summary>Does this find all personal data?</summary><p>No. It only replaces strings you list. Anything you did not list stays in the output; review the full text.</p></details>
+      <details><summary>Do case and spaces matter?</summary><p>Yes. Matching is case- and space-sensitive. Targets must be one line; line breaks and control characters are rejected. Leading and trailing spaces stay, with no Unicode normalization. The longest matching target at each position wins.</p></details>
+      <details><summary>Is my text uploaded?</summary><p>The text is processed in this browser tab and is not submitted to the tool service by design. There is no cloud storage or automatic recovery; reloading clears the text.</p></details>
+    </section>
+  </main>
+  <footer>Gloss Tools by GlossQuote</footer>
+  <dialog id="clear-dialog" aria-labelledby="clear-title" aria-describedby="clear-help">
+    <h2 id="clear-title">Clear current text?</h2><p id="clear-help">This clears the source, all redaction targets, and the result. Cancel to keep all current data.</p>
+    <div class="dialog-actions"><button type="button" id="cancel-clear" class="secondary" autofocus>Keep text</button><button type="button" id="confirm-clear" class="danger">Clear source, targets, and result</button></div>
+  </dialog>
+</body>
+</html>
